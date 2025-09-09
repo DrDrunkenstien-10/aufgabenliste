@@ -1,0 +1,174 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:4000
+  description: Generated server url
+tags:
+- name: Tasks
+  description: CRUD operations for managing tasks
+paths:
+  /api/v1/tasks:
+    get:
+      tags:
+      - Tasks
+      summary: Get all tasks
+      description: Fetches all tasks in the system
+      operationId: getAllTasks
+      responses:
+        "200":
+          description: List of tasks returned
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskResponseDTO"
+    post:
+      tags:
+      - Tasks
+      summary: Create a new task
+      description: "Creates a new task with name, description, and priority"
+      operationId: createTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: Task created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskResponseDTO"
+        "400":
+          description: Invalid input
+  /api/v1/tasks/{id}:
+    get:
+      tags:
+      - Tasks
+      summary: Get task by ID
+      description: Fetches a task by its unique ID
+      operationId: getTaskById
+      parameters:
+      - name: id
+        in: path
+        description: UUID of the task to retrieve
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Task found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskResponseDTO"
+        "404":
+          description: Task not found
+    delete:
+      tags:
+      - Tasks
+      summary: Delete a task
+      description: Deletes a task by its unique ID
+      operationId: deleteTask
+      parameters:
+      - name: id
+        in: path
+        description: UUID of the task to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "204":
+          description: Task deleted
+        "404":
+          description: Task not found
+    patch:
+      tags:
+      - Tasks
+      summary: Partially update a task
+      description: "Updates one or more fields of a task (name, description, priority).\
+        \ Fields not provided remain unchanged."
+      operationId: patchTask
+      parameters:
+      - name: id
+        in: path
+        description: UUID of the task to update
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TaskPatchRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: Task updated
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskResponseDTO"
+        "400":
+          description: Invalid input
+        "404":
+          description: Task not found
+components:
+  schemas:
+    TaskResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        priority:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    TaskRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+        description:
+          type: string
+          maxLength: 500
+          minLength: 0
+        priority:
+          type: string
+          maxLength: 10
+          minLength: 1
+      required:
+      - name
+      - priority
+    TaskPatchRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+        description:
+          type: string
+          maxLength: 500
+          minLength: 0
+        priority:
+          type: string
+          maxLength: 10
+          minLength: 1

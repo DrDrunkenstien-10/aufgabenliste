@@ -1,0 +1,130 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.primary-btn {
+  padding: 10px 16px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+}
+.primary-btn:hover {
+  background-color: #0056b3;
+}
+
+.task-list {
+  display: grid;
+  gap: 16px;
+}
+
+.task-card {
+  padding: 16px;
+  border-radius: 10px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #222;
+}
+
+.priority {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85em;
+  color: #fff;
+}
+.priority.Low { background-color: #4caf50; }
+.priority.Medium { background-color: #ff9800; }
+.priority.High { background-color: #f44336; }
+
+.task-desc {
+  margin: 10px 0;
+  color: #555;
+}
+.task-date {
+  font-size: 0.85em;
+  color: #777;
+}
+
+.task-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+.task-actions button {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f8f9fa;
+  cursor: pointer;
+}
+.task-actions button:hover {
+  background: #e2e6ea;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+.modal-content {
+  background: #fff;
+  margin: 8% auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  position: relative;
+}
+.close {
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.task-form input,
+.task-form textarea,
+.task-form select {
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aufgabenliste</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Aufgabenliste</h1>
+        <button id="open-add-btn" class="primary-btn">➕ Add New Task</button>
+        <hr>
+        <div id="task-list" class="task-list"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2 id="modal-title">Add Task</h2>
+            <form id="task-form" class="task-form">
+                <input type="hidden" id="task-id">
+                <input type="text" id="task-name" placeholder="Task Name" required maxlength="100">
+                <textarea id="task-desc" placeholder="Description (optional)" maxlength="500"></textarea>
+                <select id="task-priority" required>
+                    <option value="">-- Select Priority --</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <button type="submit" class="primary-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

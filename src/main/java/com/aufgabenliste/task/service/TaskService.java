@@ -62,6 +62,10 @@ public class TaskService {
             task.setPriority(dto.getPriority());
         }
 
+        if (dto.getStatus() != null && !dto.getStatus().isBlank()) {
+            task.setStatus(dto.getStatus());
+        }
+
         return TaskMapper.toDto(taskRepository.save(task));
     }
 

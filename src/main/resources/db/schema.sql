@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     name VARCHAR(100) NOT NULL,
     description VARCHAR(500),
     priority TEXT NOT NULL,
+    status TEXT NOT NULL,
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );

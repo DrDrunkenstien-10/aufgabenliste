@@ -12,6 +12,9 @@ public class TaskPatchRequestDTO {
     @Size(min = 1, max = 10, message = "Priority must be between 1 and 10 characters")
     private String priority;
 
+    @Size(min = 1, max = 10, message = "Status must be between 1 and 10 characters")
+    private String status;
+
     // Getters and setters
     public String getName() {
         return name;
@@ -35,5 +38,13 @@ public class TaskPatchRequestDTO {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

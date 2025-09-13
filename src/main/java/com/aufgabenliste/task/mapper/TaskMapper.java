@@ -11,6 +11,7 @@ public class TaskMapper {
         task.setName(taskRequestDTO.getName());
         task.setDescription(taskRequestDTO.getDescription());
         task.setPriority(taskRequestDTO.getPriority());
+        task.setStatus("Pending");
 
         return task;
     }
@@ -22,6 +23,7 @@ public class TaskMapper {
         taskResponseDTO.setName(task.getName());
         taskResponseDTO.setDescription(task.getDescription());
         taskResponseDTO.setPriority(task.getPriority());
+        taskResponseDTO.setStatus(task.getStatus());
         taskResponseDTO.setCreatedAt(task.getCreatedAt());
         taskResponseDTO.setUpdatedAt(task.getUpdatedAt());
 

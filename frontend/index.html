@@ -12,8 +12,29 @@
         <h1>Aufgabenliste</h1>
         <button id="open-add-btn" class="primary-btn">➕ Add New Task</button>
         <hr>
+
+        <!-- Filters -->
+        <div class="filters">
+            <label>
+                Date:
+                <input type="date" id="filter-date">
+            </label>
+            <label>
+                Status:
+                <select id="filter-status">
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                    <option value="All">All</option>
+                </select>
+            </label>
+            <button id="apply-filters" class="primary-btn">Apply Filters</button>
+        </div>
+        <hr>
+
+        <!-- ✅ Keep only one task list -->
         <div id="task-list" class="task-list"></div>
     </div>
+
 
     <!-- Modal -->
     <div id="task-modal" class="modal">

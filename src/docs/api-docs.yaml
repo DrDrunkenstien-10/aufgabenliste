@@ -119,6 +119,37 @@ paths:
           description: Invalid input
         "404":
           description: Task not found
+  /api/v1/tasks/filter:
+    get:
+      tags:
+      - Tasks
+      summary: Filter tasks
+      description: "Fetches tasks based on optional filters: createdAt date and/or\
+        \ status"
+      operationId: getTasksByFilter
+      parameters:
+      - name: date
+        in: query
+        description: "Filter tasks by creation date (yyyy-MM-dd). Example: 2025-09-13"
+        required: false
+        schema:
+          type: string
+          format: date
+        example: 2025-09-13
+      - name: status
+        in: query
+        description: "Filter tasks by status (e.g., Pending or Completed)"
+        required: false
+        schema:
+          type: string
+        example: Pending
+      responses:
+        "200":
+          description: List of filtered tasks returned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskResponseDTO"
 components:
   schemas:
     TaskResponseDTO:
@@ -132,6 +163,8 @@ components:
         description:
           type: string
         priority:
+          type: string
+        status:
           type: string
         createdAt:
           type: string
@@ -169,6 +202,10 @@ components:
           maxLength: 500
           minLength: 0
         priority:
+          type: string
+          maxLength: 10
+          minLength: 1
+        status:
           type: string
           maxLength: 10
           minLength: 1

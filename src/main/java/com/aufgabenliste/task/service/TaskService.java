@@ -1,5 +1,8 @@
 package com.aufgabenliste.task.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +47,38 @@ public class TaskService {
                 .orElseThrow(() -> new TaskNotFoundException("Task not found"));
 
         return TaskMapper.toDto(task);
+    }
+
+    public List<TaskResponseDTO> readTaskByFilter(LocalDate date, String status) {
+        List<Task> tasks;
+
+        List<TaskResponseDTO> taskResponseDTOs = new ArrayList<>();
+
+        if (date != null && status != null) {
+            LocalDateTime start = date.atStartOfDay();
+            LocalDateTime end = date.atTime(LocalTime.MAX);
+            tasks = taskRepository.findByCreatedAtBetweenAndStatus(start, end, status);
+        }
+
+        else if (date != null) {
+            LocalDateTime start = date.atStartOfDay();
+            LocalDateTime end = date.atTime(LocalTime.MAX);
+            tasks = taskRepository.findByCreatedAtBetween(start, end);
+        }
+
+        else if (status != null) {
+            tasks = taskRepository.findByStatus(status);
+        }
+
+        else {
+            tasks = taskRepository.findAll();
+        }
+
+        for (Task task : tasks) {
+            taskResponseDTOs.add(TaskMapper.toDto(task));
+        }
+
+        return taskResponseDTOs;
     }
 
     public TaskResponseDTO patchTask(UUID id, TaskPatchRequestDTO dto) {

@@ -6,10 +6,25 @@ const openAddBtn = document.getElementById("open-add-btn");
 const form = document.getElementById("task-form");
 const modalTitle = document.getElementById("modal-title");
 
-// ===== Fetch & Render =====
-async function fetchTasks() {
+// Filter controls
+const filterDateInput = document.getElementById("filter-date");
+const filterStatusSelect = document.getElementById("filter-status");
+const applyFiltersBtn = document.getElementById("apply-filters");
+
+// ===== Fetch with Filters =====
+async function fetchTasksWithFilters(date, status) {
     try {
-        const response = await fetch(API_URL);
+        let url = `${API_URL}/filter`;
+
+        const params = new URLSearchParams();
+        if (date) params.append("date", date);
+        if (status && status !== "All") params.append("status", status);
+
+        if ([...params].length > 0) {
+            url += "?" + params.toString();
+        }
+
+        const response = await fetch(url);
         if (!response.ok) throw new Error("Failed to fetch tasks");
         const tasks = await response.json();
         renderTasks(tasks);
@@ -20,6 +35,7 @@ async function fetchTasks() {
     }
 }
 
+// ===== Render =====
 function renderTasks(tasks) {
     const taskList = document.getElementById("task-list");
     taskList.innerHTML = "";
@@ -39,7 +55,14 @@ function renderTasks(tasks) {
 
         card.innerHTML = `
       <div class="task-header">
-        <div class="task-name">${task.name}</div>
+        <div>
+          <input type="checkbox" 
+                 ${task.status === "Completed" ? "checked" : ""}
+                 onchange="toggleTaskStatus('${task.id}', this.checked)">
+          <span class="task-name ${task.status === "Completed" ? "completed" : ""}">
+            ${task.name}
+          </span>
+        </div>
         <div class="priority ${task.priority}">${task.priority}</div>
       </div>
       <div class="task-desc">${task.description || "—"}</div>
@@ -53,6 +76,48 @@ function renderTasks(tasks) {
         taskList.appendChild(card);
     });
 }
+
+// ===== Toggle Status =====
+async function toggleTaskStatus(id, isChecked) {
+    const status = isChecked ? "Completed" : "Pending";
+
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status })
+        });
+
+        if (!response.ok) throw new Error("Failed to update task status");
+
+        // Refresh current filter after update
+        applyCurrentFilters();
+    } catch (error) {
+        console.error("Error updating status:", error);
+        alert("⚠️ Failed to update status: " + error.message);
+    }
+}
+
+// ===== Apply Filters =====
+function applyCurrentFilters() {
+    const selectedDate = filterDateInput.value;
+    const selectedStatus = filterStatusSelect.value;
+    fetchTasksWithFilters(selectedDate, selectedStatus);
+}
+
+applyFiltersBtn.addEventListener("click", applyCurrentFilters);
+
+// ===== Init =====
+document.addEventListener("DOMContentLoaded", () => {
+    // Default filter: today + Pending
+    const today = new Date().toISOString().split("T")[0];
+    filterDateInput.value = today;
+    filterStatusSelect.value = "Pending";
+
+    fetchTasksWithFilters(today, "Pending");
+
+    form.addEventListener("submit", saveTask);
+});
 
 // ===== Add or Update =====
 async function saveTask(event) {
@@ -97,7 +162,7 @@ async function saveTask(event) {
         if (!response.ok) throw new Error("Failed to save task");
 
         closeModal();
-        fetchTasks();
+        applyCurrentFilters();  // ✅ refresh list after save
     } catch (error) {
         console.error("Error saving task:", error);
         alert("⚠️ Failed to save task: " + error.message);
@@ -122,7 +187,7 @@ async function deleteTask(id) {
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
         if (!response.ok) throw new Error("Failed to delete task");
-        fetchTasks();
+        applyCurrentFilters();  // ✅ refresh list after delete
     } catch (error) {
         console.error("Error deleting task:", error);
         alert("⚠️ Failed to delete task: " + error.message);
@@ -152,6 +217,12 @@ window.addEventListener("click", e => {
 
 // ===== Init =====
 document.addEventListener("DOMContentLoaded", () => {
-    fetchTasks();
+    // Default filter: today + Pending
+    const today = new Date().toISOString().split("T")[0];
+    filterDateInput.value = today;
+    filterStatusSelect.value = "Pending";
+
+    fetchTasksWithFilters(today, "Pending");  // ✅ correct default fetch
+
     form.addEventListener("submit", saveTask);
 });

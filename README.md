@@ -18,6 +18,10 @@ Aufgabenliste helps you organize and track your tasks efficiently.
 
 ---
 
+## Demo
+
+[![Watch the video](https://raw.githubusercontent.com/DrDrunkenstien-10/aufgabenliste/main/demo/Aufgabenliste_Demo_Video_Thumbnail.png)](https://raw.githubusercontent.com/DrDrunkenstien-10/aufgabenliste/main/demo/Aufgabenliste_Demo.webm)
+
 ## Setup Instructions
 
 ### Option A: Run with Docker Compose (recommended)
